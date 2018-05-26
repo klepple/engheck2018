@@ -39,7 +39,8 @@ module.exports = (context, callback) => {
   };
   
   const createUser = (db, user, callback) => {
-    db.collection('users').insertOne(user, (error, result) => {
+    // noinspection JSAnnotator
+  db.collection('users').insertOne(user, (error, result) => {
       if (error) {
         console.log(error);
         return callback(null, error);
