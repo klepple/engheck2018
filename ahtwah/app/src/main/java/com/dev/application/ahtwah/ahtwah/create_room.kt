@@ -10,7 +10,7 @@ class create_room : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_room)
-        val createButton = findViewById<Button>(R.id.createbtn)
+        val createButton = findViewById<Button>(R.id.joinbtn)
         createButton.setOnClickListener{
             val roomSettingsIntent = Intent(this,room_settings::class.java)
             startActivity(roomSettingsIntent)
