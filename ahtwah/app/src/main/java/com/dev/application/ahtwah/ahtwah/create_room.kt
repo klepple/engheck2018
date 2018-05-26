@@ -9,8 +9,10 @@ import android.widget.EditText
 import android.widget.Toast
 import com.android.volley.Request
 import com.android.volley.Response
+import com.android.volley.toolbox.JsonObjectRequest
 import com.android.volley.toolbox.StringRequest
 import com.android.volley.toolbox.Volley
+import org.json.JSONObject
 
 class create_room : AppCompatActivity() {
 
@@ -18,13 +20,16 @@ class create_room : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_create_room)
         val createButton = findViewById<Button>(R.id.joinbtn)
+        val nameField = findViewById<EditText>(R.id.usernameText)
+        val timeField = findViewById<EditText>(R.id.roomText)
         createButton.setOnClickListener{
             val queue = Volley.newRequestQueue(this)
-            val url = "KAHLIA PLZ"
+            val url = "https://klepple.lib.id/ahtwah@dev/createRoom/"
+            val JSON = JSONObject(mapOf("username" to nameField.text.toString(), "totalTime" to timeField.text.toString().toInt()))
             val gameText = findViewById<EditText>(R.id.roomText)
             val nameText = findViewById<EditText>(R.id.usernameText)
 
-            val response = Response.Listener<String>{
+            val response = Response.Listener<JSONObject>{
                 response ->
                 val code = "KAHLIA PLZ"
                 val intent = Intent(this, room_settings::class.java)
@@ -38,7 +43,7 @@ class create_room : AppCompatActivity() {
                 Log.d("Error", error.toString())
                 Toast.makeText(this, "Error, Something went wrong.", Toast.LENGTH_LONG)
             }
-            val StringRequest = StringRequest(Request.Method.GET, url, response, error)
+            val StringRequest = JsonObjectRequest(Request.Method.POST, url, JSON, response, error)
             queue.add(StringRequest)
         }
     }
