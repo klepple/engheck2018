@@ -41,8 +41,8 @@ const updateTime = (db, username, roomId, time, callback) => {
           console.log(error);
           return callback(null, error);
         }
-        let formattedResult = JSON.parse(JSON.stringify(result));
-        return callback(null, formattedResult);
+        let formattedResult = '{ "totalTime": "' + timeLeft + '"}';
+        return callback(null, JSON.parse(formattedResult));
       }
     );
 };

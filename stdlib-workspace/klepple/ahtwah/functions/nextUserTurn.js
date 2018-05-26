@@ -2,12 +2,11 @@ const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 
 /**
- * API for getting the time remaining for a specific user
-* @param {string} username the username
-* @param {string} roomId the id of the room the user is in
+ * API for iterating through the list of players and returning who's turn it is
+* @param {string} roomId the room id
 * @returns {any}
 */
-module.exports = (username, roomId, context, callback) => {
+module.exports = (roomId, context, callback) => {
   let uri = process.env['MONGO_URI'];
 
   try {
@@ -17,7 +16,7 @@ module.exports = (username, roomId, context, callback) => {
           console.log(error['errors']);
           return callback(error);
         }
-        getTime(db, username, callback);
+        updateTodo(db, ids, completed, callback);
       });
   } catch (error) {
     console.log(error);
@@ -25,17 +24,18 @@ module.exports = (username, roomId, context, callback) => {
   }
 };
 
-const getTime = (db, username, callback) => {
-  db.collection('users').findOne(
-      {username: username},
-      { timeLeft: true },
+const updateActiveUser = (db, ids, completed, callback) => {
+  db
+    .collection('todo')
+    .updateMany(
+      { _id: { $in: ids } },
+      { $set: { completed: completed } },
       (error, result) => {
         if (error) {
           console.log(error);
           return callback(null, error);
         }
-        let formattedResult = '{ "totalTime": "' + result.timeLeft + '"}';
-        return callback(null, JSON.parse(formattedResult));
+        return callback(null, result);
       }
     );
 };
