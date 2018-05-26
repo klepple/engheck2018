@@ -21,7 +21,6 @@ module.exports = (username, timeLeft, roomId, context, callback) => {
     let uri = process.env['MONGO_URI'];
   
     try {
-      if (cache === null) {
         MongoClient.connect(uri, (error, db) => {
           let db = client.db('ahtwahdb');
           if (error) {
@@ -29,12 +28,8 @@ module.exports = (username, timeLeft, roomId, context, callback) => {
             return callback(error);
           }
           
-          cache = db;
           createUser(db, user, callback);
         });
-      } else {
-        createUser(cache, user, callback);
-      }
     } catch (error) {
       console.log(error);
       return callback(error);
