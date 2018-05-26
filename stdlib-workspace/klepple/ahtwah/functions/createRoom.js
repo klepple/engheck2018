@@ -12,8 +12,9 @@ let cache = null;
 */
 
 module.exports = (username, totalTime, context, callback) => {
+    let roomId = generateRoomId();
     let room = {
-      roomId: generateRoomId(),
+      roomId: roomId,
       numberOfUsers: 0,
       totalTime: totalTime,
       listOfConnectedUsers: [],
@@ -35,12 +36,20 @@ module.exports = (username, totalTime, context, callback) => {
             return callback(error);
           }
           cache = db;
-          createRoom(db, room, callback);
-          createUser(db, user, callback);
+          createRoom(db, room, (err, result) => {
+              if (err) {
+                  return callback(err);
+              }
+              createUser(db, user, callback);
+          });
         });
       } else {
-        createRoom(cache, room, callback);
-        createUser(db, user, callback);
+        createRoom(db, room, (err, result) => {
+            if (err) {
+                return callback(err);
+            }
+            createUser(db, user, callback);
+        });
       }
     } catch (error) {
       console.log(error);
@@ -74,9 +83,13 @@ module.exports = (username, totalTime, context, callback) => {
   };
 
   function generateRoomId(){
+<<<<<<< HEAD
     let roomId = "";
     for(let i = 0; i < 4; i++){
       roomId += String.fromCharCode(_.random(65,90));
     }
     return roomId;
+=======
+    return 'ABCD';
+>>>>>>> 39434184399e32a9ac224a5011aeb41cf5beb464
   }

@@ -4,8 +4,9 @@ const MongoClient = mongodb.MongoClient;
 let cache = null;
 
 /**
-* @param {string} username
-* @param {long} time
+ * API that updates the time left for a specific user
+* @param {string} username the username of the user
+* @param {number} time the time
 * @returns {any}
 */
 module.exports = (username, time, context, callback) => {
@@ -19,10 +20,10 @@ module.exports = (username, time, context, callback) => {
           return callback(error);
         }
         cache = db;
-        updateTodo(db, username, time, callback);
+        updateTime(db, username, time, callback);
       });
     } else {
-      updateTodo(cache, username, time, callback);
+      updateTime(cache, username, time, callback);
     }
   } catch (error) {
     console.log(error);
@@ -30,7 +31,7 @@ module.exports = (username, time, context, callback) => {
   }
 };
 
-const updateTodo = (db, username, time, callback) => {
+const updateTime = (db, username, time, callback) => {
   db
     .collection('users')
     .updateOne(
