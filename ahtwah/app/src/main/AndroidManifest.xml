@@ -9,17 +9,17 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".mainRoom">
+        <activity android:name=".mainRoom" android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".create_room" />
-        <activity android:name=".join_room" />
-        <activity android:name=".timer" />
-        <activity android:name=".room_settings"></activity>
+        <activity android:name=".create_room" android:screenOrientation="portrait"/>
+        <activity android:name=".join_room" android:screenOrientation="portrait"/>
+        <activity android:name=".timer" android:screenOrientation="portrait"/>
+        <activity android:name=".room_settings" android:screenOrientation="portrait"></activity>
     </application>
 
 </manifest>
