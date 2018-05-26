@@ -34,9 +34,6 @@ class create_room : AppCompatActivity() {
             }
             val StringRequest = StringRequest(Request.Method.GET, url, response, error)
             queue.add(StringRequest)
-
-            val roomSettingsIntent = Intent(this,room_settings::class.java)
-            startActivity(roomSettingsIntent)
         }
     }
 }
