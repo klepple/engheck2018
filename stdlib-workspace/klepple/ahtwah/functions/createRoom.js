@@ -11,8 +11,9 @@ let cache = null;
 */
 
 module.exports = (username, totalTime, context, callback) => {
+    let roomId = generateRoomId();
     let room = {
-      roomId: generateRoomId(),
+      roomId: roomId,
       numberOfUsers: 0,
       totalTime: totalTime,
       listOfConnectedUsers: [],
@@ -34,12 +35,20 @@ module.exports = (username, totalTime, context, callback) => {
             return callback(error);
           }
           cache = db;
-          createRoom(db, room, callback);
-          createUser(db, user, callback);
+          createRoom(db, room, (err, result) => {
+              if (err) {
+                  return callback(err);
+              }
+              createUser(db, user, callback);
+          });
         });
       } else {
-        createRoom(cache, room, callback);
-        createUser(db, user, callback);
+        createRoom(db, room, (err, result) => {
+            if (err) {
+                return callback(err);
+            }
+            createUser(db, user, callback);
+        });
       }
     } catch (error) {
       console.log(error);
@@ -73,5 +82,5 @@ module.exports = (username, totalTime, context, callback) => {
   };
 
   function generateRoomId(){
-
+    return 'ABCD';
   }
