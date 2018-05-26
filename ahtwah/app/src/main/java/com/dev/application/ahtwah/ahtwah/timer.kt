@@ -10,7 +10,7 @@ class timer : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer)
-        var timer = findViewById<TextView>(R.id.time)
+        var timer = findViewById<TextView>(R.id.timerView)
         var timeleft = TIMERLENGTH
         val myTimer = fixedRateTimer(
                 name = "mytimer",
