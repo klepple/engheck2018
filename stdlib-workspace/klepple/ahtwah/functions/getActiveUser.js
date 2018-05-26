@@ -16,7 +16,7 @@ module.exports = (roomId, context, callback) => {
           console.log(error['errors']);
           return callback(error);
         }
-        getActivePlayer(db, roomId, callback);
+        getActiveUser(db, roomId, callback);
       });
   } catch (error) {
     console.log(error);

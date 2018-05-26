@@ -24,11 +24,8 @@ module.exports = (roomId, context, callback) => {
   }
 };
 
-const updateActiveUser = (db, ids, completed, callback) => {
-  db
-    .collection('todo')
-    .updateMany(
-      { _id: { $in: ids } },
+const updateActiveUser = (db, roomId, callback) => {
+  db.collection('rooms').update({ _id: { $in: ids } },
       { $set: { completed: completed } },
       (error, result) => {
         if (error) {
