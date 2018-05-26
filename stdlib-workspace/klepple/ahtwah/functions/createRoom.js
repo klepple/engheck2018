@@ -1,5 +1,6 @@
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
+import _ from lodash;
 
 let cache = null;
 
@@ -73,5 +74,9 @@ module.exports = (username, totalTime, context, callback) => {
   };
 
   function generateRoomId(){
-
+    let roomId = "";
+    for(let i = 0; i < 4; i++){
+      roomId += String.fromCharCode(_.random(65,90));
+    }
+    return roomId;
   }
