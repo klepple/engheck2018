@@ -31,6 +31,7 @@ module.exports = (username, timeLeft, roomId, context, callback) => {
       console.log(error);
       return callback(error);
     }
+    
   };
 
   const createUser = (db, user, callback) => {

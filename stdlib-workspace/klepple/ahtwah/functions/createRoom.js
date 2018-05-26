@@ -16,7 +16,7 @@ module.exports = (username, totalTime, context, callback) => {
       numberOfUsers: 0,
       totalTime: totalTime,
       listOfConnectedUsers: [],
-      isPersonCountingDown: ''
+      isPersonCountingDown: username
     };
     let user = {
         username: username,
