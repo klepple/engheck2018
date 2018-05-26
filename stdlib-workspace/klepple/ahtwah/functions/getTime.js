@@ -5,10 +5,9 @@ let cache = null;
 
 /**
 * @param {string} username
-* @param {number} time
 * @returns {any}
 */
-module.exports = (username, time, context, callback) => {
+module.exports = (username, context, callback) => {
   let uri = process.env['MONGO_URI'];
 
   try {
@@ -19,10 +18,10 @@ module.exports = (username, time, context, callback) => {
           return callback(error);
         }
         cache = db;
-        updateTime(db, username, time, callback);
+        getTime(db, username, callback);
       });
     } else {
-      updateTime(cache, username, time, callback);
+      getTime(cache, username, callback);
     }
   } catch (error) {
     console.log(error);
@@ -30,12 +29,12 @@ module.exports = (username, time, context, callback) => {
   }
 };
 
-const updateTime = (db, username, time, callback) => {
+const getTime = (db, username, callback) => {
   db
     .collection('users')
-    .updateOne(
-      { username: username},
-      { $set: { timeLeft: time } },
+    .findOne(
+      {username: username},
+      { timeLeft: 1 },
       (error, result) => {
         if (error) {
           console.log(error);
