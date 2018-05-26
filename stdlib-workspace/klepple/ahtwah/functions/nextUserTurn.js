@@ -26,13 +26,18 @@ module.exports = (roomId, context, callback) => {
 
 const updateActiveUser = (db, roomId, callback) => {
   //Iterate through the list of connected players
-  db.collection('rooms').find({ roomId: roomId }, (error, result) => {
+  let room = db.collection('rooms').find({ roomId: roomId }, { listOfConnectedUsers, numberOfUsers }, (error, result) => {
     if (error) {
       console.log(error);
       return callback(null, error);
     }
-    
+    return callback(null, result);
   });
+
+  for(i = 0; i < room.numberOfUsers - 1; i++) {
+    //TODO
+  }
+
   db.collection('rooms').update({ roomId: roomId },
       { $set: { isPersonCountingDown: completed } },
       (error, result) => {
