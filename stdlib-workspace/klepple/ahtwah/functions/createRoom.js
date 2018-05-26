@@ -29,7 +29,8 @@ module.exports = (username, totalTime, context, callback) => {
   
     try {
       if (cache === null) {
-        MongoClient.connect(uri, (error, db) => {
+        MongoClient.connect(uri, (error, client) => {
+          let db = client.db('ahtwahdb');
           if (error) {
             console.log(error['errors']);
             return callback(error);
@@ -62,7 +63,7 @@ module.exports = (username, totalTime, context, callback) => {
         console.log(error);
         return callback(null, error);
       }
-      return callback(null, result.roomId);
+      return callback(null, result.insertedId);
     });
   };
   
@@ -74,12 +75,19 @@ module.exports = (username, totalTime, context, callback) => {
       }
       return callback(null, result.insertedId);
     });
-    //Update room object to reflect added user
-    db.collection('rooms').updateOne({ roomId: user.roomId }, { $set: { $inc: { numberOfUsers: 1} } }, function(err, res) {
-        if (err) throw err;
-        console.log("Number of connected users updated.");
-    });
   };
+
+//   const addUserToRoom = (db, user, callback) => {
+//     //Update room object to reflect added user
+//     db.collection('rooms').updateOne({ roomId: user.roomId }, { $set: { $inc: { numberOfUsers: 1} } }, function(err, res) {
+//         if (err) throw err;
+//         console.log("Number of connected users updated.");
+//     });
+//     db.collection('rooms').updateOne({ roomId: user.roomId }, { $addToSet: { listOfConnectedUsers:  } }, function(err, res) {
+//         if (err) throw err;
+//         console.log("Number of connected users updated.");
+//     });
+//   }
 
   function generateRoomId(){
     return 'ABCD';
