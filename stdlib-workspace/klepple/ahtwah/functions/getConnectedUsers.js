@@ -1,8 +1,6 @@
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 
-let cache = null;
-
 /**
  * API to get the list of connected users based on a specific room code
  * @param {string} roomId the four letter code for the room
@@ -12,18 +10,14 @@ module.exports = (roomId, context, callback) => {
   let uri = process.env['MONGO_URI'];
 
   try {
-    if (cache === null) {
-      MongoClient.connect(uri, (error, db) => {
+      MongoClient.connect(uri, (error, client) => {
+        let db = client.db('ahtwahdb');
         if (error) {
           console.log(error['errors']);
           return callback(error);
         }
-        cache = db;
         readUsers(db, roomId, callback);
       });
-    } else {
-        readUsers(cache, roomId, callback);
-    }
   } catch (error) {
     console.log(error);
     return callback(error);

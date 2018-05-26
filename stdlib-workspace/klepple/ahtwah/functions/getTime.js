@@ -1,28 +1,24 @@
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 
-let cache = null;
-
 /**
-* @param {string} username
+ * API for getting the time remaining for a specific user
+* @param {string} username the username
+* @param {string} roomId the id of the room the user is in
 * @returns {any}
 */
 module.exports = (username, roomId, context, callback) => {
   let uri = process.env['MONGO_URI'];
 
   try {
-    if (cache === null) {
-      MongoClient.connect(uri, (error, db) => {
+      MongoClient.connect(uri, (error, client) => {
+        let db = client.db('ahtwahdb');
         if (error) {
           console.log(error['errors']);
           return callback(error);
         }
-        cache = db;
         getTime(db, username, roomId, callback);
       });
-    } else {
-      getTime(cache, username, roomId, callback);
-    }
   } catch (error) {
     console.log(error);
     return callback(error);
@@ -34,13 +30,14 @@ const getTime = (db, username, roomId, callback) => {
     .collection('users')
     .findOne(
       {username: username, roomId: roomId},
-      { timeLeft: 1 },
+      { timeLeft: true },
       (error, result) => {
         if (error) {
           console.log(error);
           return callback(null, error);
         }
-        return callback(null, result);
+        let formattedResult = '{ "totalTime": "' + result.timeLeft + '"}';
+        return callback(null, JSON.parse(formattedResult));
       }
     );
 };
