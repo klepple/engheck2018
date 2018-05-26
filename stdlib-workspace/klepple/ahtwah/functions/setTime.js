@@ -9,7 +9,7 @@ let cache = null;
 * @param {number} time the time
 * @returns {any}
 */
-module.exports = (username, time, context, callback) => {
+module.exports = (username, roomId, time, context, callback) => {
   let uri = process.env['MONGO_URI'];
 
   try {
@@ -19,7 +19,7 @@ module.exports = (username, time, context, callback) => {
           console.log(error['errors']);
           return callback(error);
         }
-        updateTime(db, username, time, callback);
+        updateTime(db, username, roomId, time, callback);
       });
     } 
   } catch (error) {
@@ -28,11 +28,11 @@ module.exports = (username, time, context, callback) => {
   }
 };
 
-const updateTime = (db, username, time, callback) => {
+const updateTime = (db, username, roomId, time, callback) => {
   db
     .collection('users')
     .updateOne(
-      { username: username},
+      { username: username, roomId: roomId},
       { $set: { timeLeft: time } },
       (error, result) => {
         if (error) {
