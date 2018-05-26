@@ -13,6 +13,7 @@ module.exports = (username, context, callback) => {
   try {
     if (cache === null) {
       MongoClient.connect(uri, (error, db) => {
+        let db = client.db('ahtwahdb');
         if (error) {
           console.log(error['errors']);
           return callback(error);
@@ -30,9 +31,7 @@ module.exports = (username, context, callback) => {
 };
 
 const getTime = (db, username, callback) => {
-  db
-    .collection('users')
-    .findOne(
+  db.collection('users').findOne(
       {username: username},
       { timeLeft: 1 },
       (error, result) => {
