@@ -34,7 +34,8 @@ const getTime = (db, username, callback) => {
           console.log(error);
           return callback(null, error);
         }
-        return callback(null, result);
+        let formattedResult = JSON.parse(JSON.stringify(result));
+        return callback(null, formattedResult);
       }
     );
 };
