@@ -19,12 +19,9 @@ module.exports = (username, time, context, callback) => {
           console.log(error['errors']);
           return callback(error);
         }
-        cache = db;
         updateTime(db, username, time, callback);
       });
-    } else {
-      updateTime(cache, username, time, callback);
-    }
+    } 
   } catch (error) {
     console.log(error);
     return callback(error);
