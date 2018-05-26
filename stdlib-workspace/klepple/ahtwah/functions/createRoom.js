@@ -1,7 +1,6 @@
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 const _ = require('lodash');
-let cache = null;
 
 /**
  * API so a new user can create a room
@@ -28,14 +27,12 @@ module.exports = (username, totalTime, context, callback) => {
     let uri = process.env['MONGO_URI'];
   
     try {
-      if (cache === null) {
         MongoClient.connect(uri, (error, client) => {
           let db = client.db('ahtwahdb');
           if (error) {
             console.log(error['errors']);
             return callback(error);
           }
-          cache = db;
           createRoom(db, room, (err, result) => {
               if (err) {
                   return callback(err);
@@ -43,14 +40,6 @@ module.exports = (username, totalTime, context, callback) => {
               createUser(db, user, callback);
           });
         });
-      } else {
-        createRoom(db, room, (err, result) => {
-            if (err) {
-                return callback(err);
-            }
-            createUser(db, user, callback);
-        });
-      }
     } catch (error) {
       console.log(error);
       return callback(error);
@@ -84,8 +73,8 @@ module.exports = (username, totalTime, context, callback) => {
           console.log(error);
           return callback(null, error);
         }
-        let formattedResult = JSON.parse(JSON.stringify(result.insertedId));
-        return callback(null, "{ roomId: " + user.roomId + "}");
+        let formattedResult = '{ "roomId": "' + user.roomId + '"}';
+        return callback(null, JSON.parse(formattedResult));
       });
   };
 
