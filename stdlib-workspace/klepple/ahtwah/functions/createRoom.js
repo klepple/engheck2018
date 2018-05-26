@@ -5,16 +5,24 @@ let cache = null;
 
 /**
  * API so a new user can create a room
- * @returns {string} roomId - the four letter code that identifies a room
+ * @param {string} username the username
+ * @param {number} totalTime the time that each user gets as they enter the room
+ * @returns {any} roomId - the four letter code that identifies a room
 */
 
-module.exports = (context, callback) => {
-    let roomId = context.params.roomId || '';
-    let numberOfUsers = 1;
-    let user = {
-      username: username,
-      timeLeft: timeLeft
+module.exports = (username, totalTime, context, callback) => {
+    let room = {
+      roomId: generateRoomId(),
+      numberOfUsers: 0,
+      totalTime: totalTime,
+      listOfConnectedUsers: [],
+      isPersonCountingDown: ''
     };
+    let user = {
+        username: username,
+        timeLeft: totalTime,
+        roomId: roomId
+      };
   
     let uri = process.env['MONGO_URI'];
   
@@ -26,15 +34,27 @@ module.exports = (context, callback) => {
             return callback(error);
           }
           cache = db;
-          createTodo(db, user, callback);
+          createRoom(db, room, callback);
+          createUser(db, user, callback);
         });
       } else {
-        createTodo(cache, user, callback);
+        createRoom(cache, room, callback);
+        createUser(db, user, callback);
       }
     } catch (error) {
       console.log(error);
       return callback(error);
     }
+  };
+  
+  const createRoom = (db, room, callback) => {
+    db.collection('rooms').insertOne(room, (error, result) => {
+      if (error) {
+        console.log(error);
+        return callback(null, error);
+      }
+      return callback(null, result.roomId);
+    });
   };
   
   const createUser = (db, user, callback) => {
@@ -44,6 +64,11 @@ module.exports = (context, callback) => {
         return callback(null, error);
       }
       return callback(null, result.insertedId);
+    });
+    //Update room object to reflect added user
+    db.collection('rooms').updateOne({ roomId: user.roomId }, { $set: { $inc: { numberOfUsers: 1} } }, function(err, res) {
+        if (err) throw err;
+        console.log("Number of connected users updated.");
     });
   };
 

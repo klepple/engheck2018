@@ -5,16 +5,17 @@ let cache = null;
 
 /**
  * API so a new user can join the room
+ * @param {string} username the username
+ * @param {number} timeLeft the time left on the user's clock
+ * @param {string} roomId the four letter id of the room the user wants to/is currently connected to
  * @returns {any}
 */
 
-module.exports = (context, callback) => {
-    let username = context.params.username || '';
-    let timeLeft = context.params.timeLeft || 10;
-    let roomId = context.params.roomId;
+module.exports = (username, timeLeft, roomId, context, callback) => {
     let user = {
       username: username,
-      timeLeft: timeLeft
+      timeLeft: timeLeft,
+      roomId: roomId
     };
   
     let uri = process.env['MONGO_URI'];
@@ -37,7 +38,7 @@ module.exports = (context, callback) => {
       return callback(error);
     }
   };
-  
+
   const createUser = (db, user, callback) => {
     db.collection('users').insertOne(user, (error, result) => {
       if (error) {
@@ -47,8 +48,8 @@ module.exports = (context, callback) => {
       return callback(null, result.insertedId);
     });
     //Update room object to reflect added user
-    db.collection('rooms').updateOne({ roomId:roomId }, { $set: { $inc: { numberOfUsers: 1} } }, function(err, res) {
+    db.collection('rooms').updateOne({ roomId: user.roomId }, { $set: { $inc: { numberOfUsers: 1} } }, function(err, res) {
         if (err) throw err;
         console.log("Number of connected users updated.");
-      });
-  };
+    });
+};
