@@ -11,8 +11,10 @@ import kotlin.concurrent.fixedRateTimer
 class timer : AppCompatActivity() {
     val TIMERLENGTH = 100
     override fun onCreate(savedInstanceState: Bundle?) {
+
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer)
+        /*
         val roomId = getIntent().getStringExtra("roomId")
         var timer = findViewById<TextView>(R.id.timerView)
         var stopButton = findViewById<Button>(R.id.stopButton)
@@ -21,13 +23,22 @@ class timer : AppCompatActivity() {
         stopButton.setOnClickListener{
             activePlayer = false
         }
+
         val url = "https://klepple.lib.id/ahtwah@dev/nextUserTurn"
         val JSON = JSONObject(mapOf("roomId" to roomId))
+        */
+        var timeleft = 100
+        val timer = findViewById<TextView>(R.id.timerView)
         val myTimer = fixedRateTimer(
                 name = "mytimer",
                 initialDelay = 100,
                 period = 1000
         ){
+            runOnUiThread {
+                timer.text = timeleft.toString()
+            }
+            timeleft -= 1
+            /*
             if(timeleft < 1){
                 timer.text = "YOU LOSE!!! GAME OVER"
                 this.cancel()
@@ -38,6 +49,7 @@ class timer : AppCompatActivity() {
             } else {
                 stopButton.visibility = View.INVISIBLE
             }
+            */
         }
     }
 }

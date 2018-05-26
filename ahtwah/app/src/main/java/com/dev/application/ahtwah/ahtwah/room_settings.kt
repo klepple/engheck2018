@@ -52,6 +52,7 @@ class room_settings : AppCompatActivity() {
             val b = findViewById<Button>(R.id.StartButton)
             b.visibility = View.VISIBLE
             b.setOnClickListener{
+                /*
                 val queue = Volley.newRequestQueue(this)
                 val url = "https://klepple.lib.id/ahtwah@dev/getActiveUser/"
                 val JSON = JSONObject(mapOf("roomId" to roomId))
@@ -66,6 +67,9 @@ class room_settings : AppCompatActivity() {
                     Log.d("error", error.toString())
                 }
                 queue.add(JsonObjectRequest(Request.Method.POST, url, JSON, response, error))
+                */
+                val intent = Intent(this, timer::class.java)
+                startActivity(intent)
             }
         }
     }
