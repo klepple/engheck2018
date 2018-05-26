@@ -1,8 +1,6 @@
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
 
-let cache = null;
-
 /**
  * API so a new user can join the room
  * @param {string} username the username
@@ -21,19 +19,14 @@ module.exports = (username, timeLeft, roomId, context, callback) => {
     let uri = process.env['MONGO_URI'];
   
     try {
-      if (cache === null) {
-        MongoClient.connect(uri, (error, db) => {
+        MongoClient.connect(uri, (error, client) => {
           let db = client.db('ahtwahdb');
           if (error) {
             console.log(error['errors']);
             return callback(error);
           }
-          cache = db;
           createUser(db, user, callback);
         });
-      } else {
-        createUser(cache, user, callback);
-      }
     } catch (error) {
       console.log(error);
       return callback(error);
