@@ -31,11 +31,13 @@ class create_room : AppCompatActivity() {
 
             val response = Response.Listener<JSONObject>{
                 response ->
-                val code = "KAHLIA PLZ"
+                val code = response.get("roomId").toString()
+                Log.d("nice", code)
                 val intent = Intent(this, room_settings::class.java)
-                intent.putExtra("Roomcode", code)
-                intent.putExtra("name", nameText.text.toString())
-                intent.putExtra("Gametime", gameText.text.toString())
+                intent.putExtra("roomId", code)
+                intent.putExtra("username", nameText.text.toString())
+                intent.putExtra("time", gameText.text.toString())
+                intent.putExtra("isHost", true)
                 startActivity(intent)
             }
             val error = Response.ErrorListener {

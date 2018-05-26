@@ -25,6 +25,7 @@ class join_room : AppCompatActivity() {
         joinButton.setOnClickListener{
             val queue = Volley.newRequestQueue(this)
             val url = "https://klepple.lib.id/ahtwah@dev/joinRoom/"
+            val url2 = "https://klepple.lib.id/ahtwah@dev/getTime/"
             val JSON = JSONObject(mapOf("username" to userText.text.toString(), "roomId" to roomText.text.toString()))
             val response = Response.Listener<JSONObject>{
                 response ->
@@ -34,6 +35,16 @@ class join_room : AppCompatActivity() {
                 intent.putExtra("Name", userText.text.toString())
                 startActivity(intent)
             }
+            val response2 = Response.Listener<JSONObject>{
+                response ->
+                val time = "FROM RESPONSE"
+                val intent = Intent(this, room_settings::class.java)
+                intent.putExtra("roomId", roomText.text.toString())
+                intent.putExtra("username", userText.text.toString())
+                intent.putExtra("time", time)
+                intent.putExtra("isHost", false)
+                startActivity(intent)
+            }
             val error = Response.ErrorListener {
                 error ->
                 Log.d("Error", error.toString())
@@ -41,11 +52,8 @@ class join_room : AppCompatActivity() {
             }
             val JsonObjectRequest = JsonObjectRequest(Request.Method.POST, url, JSON, response, error)
             queue.add(JsonObjectRequest)
-            val JsonObjectRequest = 
-            val intent = Intent(this, room_settings::class.java)
-            intent.putExtra("Username", userText.text.toString())
-            intent.putExtra("RoomID", roomText.text.toString())
-            startActivity(intent)
+            val loginRequest = JsonObjectRequest(Request.Method.POST, url2, JSON, response2, error)
+            queue.add(loginRequest)
         }
     }
 }
