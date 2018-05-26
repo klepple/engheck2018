@@ -23,7 +23,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <Button
-        android:id="@+id/startbtn"
+        android:id="@+id/stopButton"
         android:layout_width="176dp"
         android:layout_height="wrap_content"
         android:layout_marginBottom="8dp"
@@ -31,7 +31,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/button_background"
-        android:text="Start"
+        android:text="Stop"
         android:textColor="@color/pale_rose"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

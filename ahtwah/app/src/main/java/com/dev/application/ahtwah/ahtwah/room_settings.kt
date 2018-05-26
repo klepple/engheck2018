@@ -48,8 +48,29 @@ class room_settings : AppCompatActivity() {
         queue.add(StringRequest)
         */
 
-        if(isHost){
-            findViewById<Button>(R.id.StartButton).visibility = View.VISIBLE
+        if(isHost) {
+            val b = findViewById<Button>(R.id.StartButton)
+            b.visibility = View.VISIBLE
+            b.setOnClickListener{
+                /*
+                val queue = Volley.newRequestQueue(this)
+                val url = "https://klepple.lib.id/ahtwah@dev/getActiveUser/"
+                val JSON = JSONObject(mapOf("roomId" to roomId))
+                val response = Response.Listener<JSONObject>{
+                    response ->
+                    val intent = Intent(this, timer::class.java)
+                    intent.putExtra("roomId", roomId)
+                    startActivity(intent)
+                }
+                val error = Response.ErrorListener {
+                    error ->
+                    Log.d("error", error.toString())
+                }
+                queue.add(JsonObjectRequest(Request.Method.POST, url, JSON, response, error))
+                */
+                val intent = Intent(this, timer::class.java)
+                startActivity(intent)
+            }
         }
     }
 }
