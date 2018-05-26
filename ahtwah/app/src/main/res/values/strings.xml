@@ -1,3 +1,10 @@
 <resources>
     <string name="app_name">ahtwah</string>
+    <color name="light_cyan">#94D6DF</color>
+    <color name="cyan">#62c3d0</color>
+    <color name="salmon">#F59A96</color>
+    <color name="pale_rose">#F1C4A2</color>
+    <color name="light_gray">#9e9fa2</color>
+    <color name="gray">#7D7E81</color>
+    <color name="white">#FFFFFF</color>
 </resources>
