@@ -20,11 +20,12 @@ module.exports = (username, timeLeft, roomId, context, callback) => {
   
     try {
         MongoClient.connect(uri, (error, client) => {
+          let db = client.db('ahtwahdb');
           if (error) {
             console.log(error['errors']);
             return callback(error);
           }
-          //createUser(client.db('ahtwahdb'), user, callback);
+          createUser(db, user, callback);
         });
     } catch (error) {
       console.log(error);
@@ -35,21 +36,21 @@ module.exports = (username, timeLeft, roomId, context, callback) => {
 
   const createUser = (db, user, callback) => {
     //Update room object to reflect added user
-    // db.collection('rooms').updateOne({ roomId: user.roomId }, { $inc: { numberOfUsers: 1} }, function(err, res) {
-    //     if (err) throw err;
-    //     console.log("Number of connected users updated.");
-    // });
-    // //Add user to the list of connected users
-    // db.collection('rooms').updateOne({ roomId: user.roomId }, { $addToSet: { listOfConnectedUsers: user.username } }, function(err, res) {
-    //     if (err) throw err;
-    //     console.log("User added to the list of connected users");
-    // });
-    // db.collection('users').insertOne(user, (error, result) => {
-    //     if (error) {
-    //       console.log(error);
-    //       return callback(null, error);
-    //     }
-    //     let formattedResult = JSON.parse(JSON.stringify(result.insertedId));
-    //     return callback(null, user.roomId);
-    //   });
+    db.collection('rooms').updateOne({ roomId: user.roomId }, { $inc: { numberOfUsers: 1} }, function(err, res) {
+        if (err) throw err;
+        console.log("Number of connected users updated.");
+    });
+    //Add user to the list of connected users
+    db.collection('rooms').updateOne({ roomId: user.roomId }, { $addToSet: { listOfConnectedUsers: user.username } }, function(err, res) {
+        if (err) throw err;
+        console.log("User added to the list of connected users");
+    });
+    db.collection('users').insertOne(user, (error, result) => {
+        if (error) {
+          console.log(error);
+          return callback(null, error);
+        }
+        let formattedResult = JSON.parse(JSON.stringify(result.insertedId));
+        return callback(null, user.roomId);
+      });
   };
