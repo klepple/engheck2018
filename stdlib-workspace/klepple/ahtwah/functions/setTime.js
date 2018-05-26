@@ -6,43 +6,43 @@ let cache = null;
 /**
 * API that updates the time left for a specific user
 * @param {string} username the username of the user
+* @param {string} roomId the id of the room the user is connected to
 * @param {number} time the time
 * @returns {any}
 */
-module.exports = (username, time, context, callback) => {
+module.exports = (username, roomId, time, context, callback) => {
   let uri = process.env['MONGO_URI'];
 
   try {
     if (cache === null) {
-      MongoClient.connect(uri, (error, db) => {
+      MongoClient.connect(uri, (error, client) => {
+        let db = client.db('ahtwahdb');
         if (error) {
           console.log(error['errors']);
           return callback(error);
         }
-        cache = db;
-        updateTime(db, username, time, callback);
+        updateTime(db, username, roomId, time, callback);
       });
-    } else {
-      updateTime(cache, username, time, callback);
-    }
+    } 
   } catch (error) {
     console.log(error);
     return callback(error);
   }
 };
 
-const updateTime = (db, username, time, callback) => {
+const updateTime = (db, username, roomId, time, callback) => {
   db
     .collection('users')
     .updateOne(
-      { username: username},
+      { username: username, roomId: roomId},
       { $set: { timeLeft: time } },
       (error, result) => {
         if (error) {
           console.log(error);
           return callback(null, error);
         }
-        return callback(null, result);
+        let formattedResult = '{ "totalTime": "' + timeLeft + '"}';
+        return callback(null, JSON.parse(formattedResult));
       }
     );
 };
