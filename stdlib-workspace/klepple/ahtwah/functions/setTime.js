@@ -4,8 +4,9 @@ const MongoClient = mongodb.MongoClient;
 let cache = null;
 
 /**
-* @param {string} username
-* @param {number} time
+* API that updates the time left for a specific user
+* @param {string} username the username of the user
+* @param {number} time the time
 * @returns {any}
 */
 module.exports = (username, time, context, callback) => {
