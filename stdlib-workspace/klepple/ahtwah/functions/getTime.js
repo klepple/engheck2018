@@ -34,7 +34,8 @@ const getTime = (db, username, callback) => {
           console.log(error);
           return callback(null, error);
         }
-        return callback(null, result);
+        let formattedResult = '{ "totalTime": "' + timeLeft + '"}';
+        return callback(null, JSON.parse(formattedResult));
       }
     );
 };
