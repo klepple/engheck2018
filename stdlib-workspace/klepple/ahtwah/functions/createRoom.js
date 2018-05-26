@@ -1,7 +1,6 @@
 const mongodb = require('mongodb');
 const MongoClient = mongodb.MongoClient;
-import _ from lodash;
-
+const _ = require('lodash');
 let cache = null;
 
 /**
@@ -30,7 +29,8 @@ module.exports = (username, totalTime, context, callback) => {
   
     try {
       if (cache === null) {
-        MongoClient.connect(uri, (error, db) => {
+        MongoClient.connect(uri, (error, client) => {
+          let db = client.db('ahtwahdb');
           if (error) {
             console.log(error['errors']);
             return callback(error);
@@ -61,26 +61,34 @@ module.exports = (username, totalTime, context, callback) => {
     db.collection('rooms').insertOne(room, (error, result) => {
       if (error) {
         console.log(error);
-        return callback(null, error);
+        return callback(error);
       }
-      return callback(null, result.roomId);
+      let formattedResult = JSON.parse(JSON.stringify(result));
+      return callback(null, formattedResult);
     });
   };
   
   const createUser = (db, user, callback) => {
-    db.collection('users').insertOne(user, (error, result) => {
-      if (error) {
-        console.log(error);
-        return callback(null, error);
-      }
-      return callback(null, result.insertedId);
-    });
     //Update room object to reflect added user
-    db.collection('rooms').updateOne({ roomId: user.roomId }, { $set: { $inc: { numberOfUsers: 1} } }, function(err, res) {
+    db.collection('rooms').updateOne({ roomId: user.roomId }, { $inc: { numberOfUsers: 1} }, function(err, res) {
         if (err) throw err;
         console.log("Number of connected users updated.");
     });
+    //Add user to the list of connected users
+    db.collection('rooms').updateOne({ roomId: user.roomId }, { $addToSet: { listOfConnectedUsers: user.username } }, function(err, res) {
+        if (err) throw err;
+        console.log("User added to the list of connected users");
+    });
+    db.collection('users').insertOne(user, (error, result) => {
+        if (error) {
+          console.log(error);
+          return callback(null, error);
+        }
+        let formattedResult = JSON.parse(JSON.stringify(result.insertedId));
+        return callback(null, user.roomId);
+      });
   };
+
 
   function generateRoomId(){
     let roomId = "";
