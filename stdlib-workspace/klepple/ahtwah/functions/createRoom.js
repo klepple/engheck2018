@@ -85,11 +85,11 @@ module.exports = (username, totalTime, context, callback) => {
           return callback(null, error);
         }
         let formattedResult = JSON.parse(JSON.stringify(result.insertedId));
-        return callback(null, user.roomId);
+        return callback(null, "{ roomId: " + user.roomId + "}");
       });
   };
 
-
+  //Function to generate a random 4-letter id for the room
   function generateRoomId(){
     let roomId = "";
     for(let i = 0; i < 4; i++){
