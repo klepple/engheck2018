@@ -27,6 +27,7 @@ module.exports = (username, timeLeft, roomId, context, callback) => {
             console.log(error['errors']);
             return callback(error);
           }
+          
           cache = db;
           createUser(db, user, callback);
         });
@@ -37,20 +38,22 @@ module.exports = (username, timeLeft, roomId, context, callback) => {
       console.log(error);
       return callback(error);
     }
+    console.log(db);
   };
 
-  const createUser = (db, user, callback) => {
+const createUser = (db, user, callback) => {
     // noinspection JSAnnotator
+  console.log(db);
   db.collection('users').insertOne(user, (error, result) => {
       if (error) {
         console.log(error);
         return callback(null, error);
       }
       return callback(null, result.insertedId);
-    });
-    //Update room object to reflect added user
-    db.collection('rooms').updateOne({ roomId: user.roomId }, { $set: { $inc: { numberOfUsers: 1} } }, function(err, res) {
-        if (err) throw err;
-        console.log("Number of connected users updated.");
-    });
+  });
+  //Update room object to reflect added user
+  db.collection('rooms').updateOne({ roomId: user.roomId }, { $set: { $inc: { numberOfUsers: 1} } }, function(err, res) {
+      if (err) throw err;
+      console.log("Number of connected users updated.");
+  });
 };

@@ -83,13 +83,9 @@ module.exports = (username, totalTime, context, callback) => {
   };
 
   function generateRoomId(){
-<<<<<<< HEAD
     let roomId = "";
     for(let i = 0; i < 4; i++){
       roomId += String.fromCharCode(_.random(65,90));
     }
     return roomId;
-=======
-    return 'ABCD';
->>>>>>> 39434184399e32a9ac224a5011aeb41cf5beb464
   }
