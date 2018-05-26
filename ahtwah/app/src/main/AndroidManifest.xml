@@ -16,6 +16,10 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".create_room" />
+        <activity android:name=".join_room" />
+        <activity android:name=".timer" />
+        <activity android:name=".room_settings"></activity>
     </application>
 
 </manifest>
