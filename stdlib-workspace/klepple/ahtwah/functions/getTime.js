@@ -7,7 +7,7 @@ let cache = null;
 * @param {string} username
 * @returns {any}
 */
-module.exports = (username, context, callback) => {
+module.exports = (username, roomId, context, callback) => {
   let uri = process.env['MONGO_URI'];
 
   try {
@@ -18,10 +18,10 @@ module.exports = (username, context, callback) => {
           return callback(error);
         }
         cache = db;
-        getTime(db, username, callback);
+        getTime(db, username, roomId, callback);
       });
     } else {
-      getTime(cache, username, callback);
+      getTime(cache, username, roomId, callback);
     }
   } catch (error) {
     console.log(error);
@@ -29,11 +29,11 @@ module.exports = (username, context, callback) => {
   }
 };
 
-const getTime = (db, username, callback) => {
+const getTime = (db, username, roomId, callback) => {
   db
     .collection('users')
     .findOne(
-      {username: username},
+      {username: username, roomId: roomId},
       { timeLeft: 1 },
       (error, result) => {
         if (error) {
