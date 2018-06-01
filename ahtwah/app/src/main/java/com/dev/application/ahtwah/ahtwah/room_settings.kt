@@ -69,6 +69,7 @@ class room_settings : AppCompatActivity() {
                 queue.add(JsonObjectRequest(Request.Method.POST, url, JSON, response, error))
                 */
                 val intent = Intent(this, timer::class.java)
+                intent.putExtra("time", time)
                 startActivity(intent)
             }
         }

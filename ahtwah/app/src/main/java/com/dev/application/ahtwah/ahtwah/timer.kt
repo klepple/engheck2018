@@ -1,5 +1,6 @@
 package com.dev.application.ahtwah.ahtwah
 
+import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.view.View
@@ -27,7 +28,7 @@ class timer : AppCompatActivity() {
         val url = "https://klepple.lib.id/ahtwah@dev/nextUserTurn"
         val JSON = JSONObject(mapOf("roomId" to roomId))
         */
-        var timeleft = 100
+        var timeleft = getIntent().getStringExtra("time").toInt()
         val timer = findViewById<TextView>(R.id.timerView)
         val myTimer = fixedRateTimer(
                 name = "mytimer",
