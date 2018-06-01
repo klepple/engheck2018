@@ -15,19 +15,19 @@ class timer : AppCompatActivity() {
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_timer)
-        /*
-        val roomId = getIntent().getStringExtra("roomId")
-        var timer = findViewById<TextView>(R.id.timerView)
+
+//        val roomId = getIntent().getStringExtra("roomId")
+//        var timer = findViewById<TextView>(R.id.timerView)
         var stopButton = findViewById<Button>(R.id.stopButton)
         var activePlayer = false
-        var timeleft = TIMERLENGTH
+//        var timeleft = TIMERLENGTH
         stopButton.setOnClickListener{
             activePlayer = false
         }
+//
+//        val url = "https://klepple.lib.id/ahtwah@dev/nextUserTurn"
+//        val JSON = JSONObject(mapOf("roomId" to roomId))
 
-        val url = "https://klepple.lib.id/ahtwah@dev/nextUserTurn"
-        val JSON = JSONObject(mapOf("roomId" to roomId))
-        */
         var timeleft = getIntent().getStringExtra("time").toInt()
         val timer = findViewById<TextView>(R.id.timerView)
         val myTimer = fixedRateTimer(
@@ -39,18 +39,18 @@ class timer : AppCompatActivity() {
                 timer.text = timeleft.toString()
             }
             timeleft -= 1
-            /*
+
             if(timeleft < 1){
                 timer.text = "YOU LOSE!!! GAME OVER"
-                this.cancel()
+//                this.cancel()
             }
-            if(activePlayer){
-                timeleft -= 1
-                stopButton.visibility = View.VISIBLE
-            } else {
-                stopButton.visibility = View.INVISIBLE
-            }
-            */
+//            if(activePlayer){
+//                timeleft -= 1
+//                stopButton.visibility = View.VISIBLE
+//            } else {
+//                stopButton.visibility = View.INVISIBLE
+//            }
+//
         }
     }
 }
