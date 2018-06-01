@@ -37,13 +37,14 @@ class timer : AppCompatActivity() {
         ){
             runOnUiThread {
                 timer.text = timeleft.toString()
+                if(timeleft < 1){
+                    timer.text = "YOU LOSE!!! GAME OVER"
+                    this.cancel()
+                }
             }
             timeleft -= 1
 
-            if(timeleft < 1){
-                timer.text = "YOU LOSE!!! GAME OVER"
-//                this.cancel()
-            }
+
 //            if(activePlayer){
 //                timeleft -= 1
 //                stopButton.visibility = View.VISIBLE
