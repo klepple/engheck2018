@@ -19,7 +19,7 @@ class timer : AppCompatActivity() {
 //        val roomId = getIntent().getStringExtra("roomId")
 //        var timer = findViewById<TextView>(R.id.timerView)
         var stopButton = findViewById<Button>(R.id.stopButton)
-        var activePlayer = false
+        var activePlayer = true
 //        var timeleft = TIMERLENGTH
         stopButton.setOnClickListener{
             activePlayer = false
@@ -41,17 +41,14 @@ class timer : AppCompatActivity() {
                     timer.text = "YOU LOSE!!! GAME OVER"
                     this.cancel()
                 }
+                if(activePlayer){
+                    timeleft -= 1
+                    stopButton.isClickable = true
+                } else {
+                    stopButton.isClickable = false
+                }
             }
-            timeleft -= 1
-
-
-//            if(activePlayer){
-//                timeleft -= 1
-//                stopButton.visibility = View.VISIBLE
-//            } else {
-//                stopButton.visibility = View.INVISIBLE
-//            }
-//
+//            timeleft -= 1
         }
     }
 }
